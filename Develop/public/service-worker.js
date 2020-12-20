@@ -9,13 +9,16 @@ const FILES_TO_CACHE = [
     './js/index.js'
  ];
  
+ // this is the event listener that recognizes a fetch
  self.addEventListener('fetch', function(event) {
     
+    //this checks the fetch request.
     event.respondWith(caches.match(event.request).then(function (req) {
        return req || fetch(event.req);
     }));
  });
  
+ // this adds the new cache to save
  self.addEventListener('install', function (event) {
     event.waitUntil(caches.open(CACHE_NAME).then(function (cache) {
        console.log('installing cache : ' + CACHE_NAME);
@@ -23,6 +26,7 @@ const FILES_TO_CACHE = [
     }));
  });
  
+ // this removes the previous caches
  self.addEventListener('activate', function (e) {
     e.waitUntil(caches.keys().then(function (keyList) {
        let cacheKeepList = keyList.filter(function (key) {
